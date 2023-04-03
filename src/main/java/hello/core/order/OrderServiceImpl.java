@@ -1,7 +1,6 @@
 package hello.core.order;
 
 import hello.core.discount.DiscountPolicy;
-import hello.core.discount.FixDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
@@ -9,11 +8,17 @@ import hello.core.member.MemoryMemberRepository;
 public class OrderServiceImpl implements OrderService {
 
     /**
+     * final은 무조건 값이 할당 되어야 한다.
      * MemberRepository에서 회원 찾기
-     * DiscountPolicy는 고정 할인 정책
+     * DiscountPolicy는 고정 할인 정책 -> RateDiscountPolicy
+     * => 객체지향의 5가지 원칙 SOLID 중 OCP, DIP 위반
+     * => DIP 위반 : 인터페이스(추상화)와 구현클래스(구체화)를 다 의존한다.
+     * => OCP 위반 : 구현클래스를 의존하면서 구현클래스가 바뀌면 OrderServiceImpl클라이언트도 변경해줘야 한다.
      */
     private final MemberRepository memberRepository = new MemoryMemberRepository();
-    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+//    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+//    private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
+    private DiscountPolicy discountPolicy; // 구체에 의존하지 않고 추상화에 의존 -> 구현체가 없어서 실행 시 NullPointerException이 일어난다.
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
