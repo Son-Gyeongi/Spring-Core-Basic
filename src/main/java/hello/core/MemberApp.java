@@ -7,7 +7,13 @@ import hello.core.member.MemberServiceImpl;
 
 public class MemberApp {
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
+//        MemberService memberService = new MemberServiceImpl(memberRepository);
+        /**
+         * 기존에는 우리가 MemberApp에서 직접 객체를 생성했는데
+         * 이제는 AppConfig를 이용해서 개발해보자
+         */
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
         Member member = new Member(1L, "memberA", Grade.VIP);
         memberService.join(member);
 
