@@ -57,6 +57,11 @@ public class AppConfig {
      * DiscountPolicy 역할
      */
     public DiscountPolicy discountPolicy() {
-        return new FixDiscountPolicy();
+        /**
+         * AppConfig는 배우만 바꾼다고 생각하면 된다.
+         * 할인에 대한 구체 객체를 바꾼다.
+         */
+//        return new FixDiscountPolicy();
+        return new RateDiscountPolicy();
     }
 }
