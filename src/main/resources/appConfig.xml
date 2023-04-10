@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--    AppConfig 클래스 파일에 빈 등록했을 때랑 거의 비슷하다.
+        형식만 xml일 뿐, 스프링은 유연하게 설정을 할 수 있다.-->
+<!--    MemberService 빈에 등록-->
+    <bean id="memberService" class="hello.core.member.MemberServiceImpl">
+<!--        생성자 넘겨줘야한다.-->
+        <constructor-arg name="memberRepository" ref="memberRepository" />
+    </bean>
+
+<!--    MemberRepository 빈에 등록-->
+<!--    실제 구현 객체는 MemoryMemberRepository-->
+    <bean id="memberRepository" class="hello.core.member.MemoryMemberRepository" />
+
+<!--    OrderService-->
+    <bean id="orderService" class="hello.core.order.OrderServiceImpl">
+        <constructor-arg name="memberRepository" ref="memberRepository" />
+        <constructor-arg name="discountPolicy" ref="discountPolicy" />
+    </bean>
+
+<!--    할인정책-->
+    <bean id="discountPolicy" class="hello.core.discount.RateDiscountPolicy" />
+</beans>
