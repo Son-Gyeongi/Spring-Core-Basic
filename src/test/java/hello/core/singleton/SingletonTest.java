@@ -6,11 +6,13 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
+
 public class SingletonTest {
 
     @Test
     @DisplayName("스프링 없는 순수한 DI 컨테이너")
-    // 우리가 만들었던 순수한 DI 컨테이너가 가진 문제점을 볼 거다. 그리고 나중에 스프링이랑 비교해보자
+        // 우리가 만들었던 순수한 DI 컨테이너가 가진 문제점을 볼 거다. 그리고 나중에 스프링이랑 비교해보자
     void pureContainer() {
         AppConfig appConfig = new AppConfig();
         // 1. 조회 : 호출할 때마다 객체를 생성하는지 조회
@@ -38,6 +40,47 @@ public class SingletonTest {
 
         //검증 - 위에 출력문을 통해서 눈으로 확인했지만 테스트는 자동화되게 만들어야한다.
         // memberService1 != memberService2
-        Assertions.assertThat(memberService1).isNotSameAs(memberService2);
+        assertThat(memberService1).isNotSameAs(memberService2);
+    }
+
+
+    // 위 코드와 상관이 없이 SingletonService 테스트 하기위해서 작성
+    public static void main(String[] args) {
+//        SingletonService singletonService = new SingletonService(); // 에러
+    }
+
+    @Test
+    @DisplayName("싱글톤 패턴을 적용한 객체 사용")
+    void singletonServiceTest() {
+        // private으로 생성자를 막아두었다. 컴파일 오류가 발생한다.
+//        new SingletonService();
+        // 위와 같이 쓰면 에러 SingletonService() has private access
+
+        // 1. 조회 : 호출할 때마다 객체를 반환하는지 조회
+        SingletonService singletonService1 = SingletonService.getInstance();
+        // 2. 조회 : 호출할 때마다 객체를 반환하는지 조회
+        SingletonService singletonService2 = SingletonService.getInstance();
+
+        // 참조값이 같은 것을 확인
+        System.out.println("singletonService1 = " + singletonService1);
+        System.out.println("singletonService2 = " + singletonService2);
+        /** 결과
+         * 같은 객체(인스턴스) 반환
+         * singletonService1 = hello.core.singleton.SingletonService@7dc0f706
+         * singletonService2 = hello.core.singleton.SingletonService@7dc0f706
+         *
+         * 객체 인스턴스 생성하는 비용이 1000이라면 참조로 가져오는 비용은 1정도이다.
+         * 실제로는 차이가 더 클거다.
+         */
+
+        // 검증
+        // singletonService1 == singletonService2
+        assertThat(singletonService1).isSameAs(singletonService2);
+        /**
+         * isSameAs 자바 == 비교와 같다. -> 여기서는 인스턴스가 같은지 보기위해서 isSameAs 사용하면 된다.
+         * isEqualTo 자바의 equals()와 같다.
+         */
+
+        singletonService1.logic();
     }
 }
