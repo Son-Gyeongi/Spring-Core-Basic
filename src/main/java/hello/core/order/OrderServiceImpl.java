@@ -4,7 +4,10 @@ import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component // @ComponentScan 대상이 되면서 스프링 빈으로 등록
 public class OrderServiceImpl implements OrderService {
 
     /**
@@ -23,6 +26,11 @@ public class OrderServiceImpl implements OrderService {
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
+    /**
+     * @Component 작성 후 자동 의존 관계 주입
+     * ac.getBean(MemberRepository.class) 이런식으로 동작한다고 생각하면 된다.
+     */
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;

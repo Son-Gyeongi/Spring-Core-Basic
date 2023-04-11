@@ -36,7 +36,7 @@ import org.springframework.context.annotation.Configuration;
  * 내가 직접 new 해준거랑 같다. 스프링 컨테이너에서 관리도 안된다.
  */
 @Configuration
-public class AppConfig {
+public class AppConfig { // 순수한 AppConfig
 
     // new로 객체를 생성하면 싱글톤이 깨지지 않을까?
     // @Bean memberService -> new MemoryMemberRepository()
