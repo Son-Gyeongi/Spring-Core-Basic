@@ -23,4 +23,10 @@ public class MemberServiceImpl implements MemberService {
     public Member findMember(Long memberId) {
         return memberRepository.findById(memberId);
     }
+
+    // 테스트 용도
+    // MemberServiceImpl에 있는 MemberRepository 꺼내보자
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }

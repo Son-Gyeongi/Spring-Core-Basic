@@ -32,6 +32,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
+    // new로 객체를 생성하면 싱글톤이 깨지지 않을까?
+    // @Bean memberService -> new MemoryMemberRepository()
+    // @Bean orderService -> new MemoryMemberRepository()
+    // 메시지를 넣어서 동작과정 테스트 해보자
+
     /**
      * MemberService 역할
      */
@@ -40,6 +45,7 @@ public class AppConfig {
         /**
          * 생성자를 통해서 new 인스턴스 객체가 들어간다. - 생성자 주입
          */
+        System.out.println("call AppConfig.memberService");
         return new MemberServiceImpl(memberRepository());
     }
 
@@ -48,6 +54,7 @@ public class AppConfig {
      */
     @Bean
     public MemberRepository memberRepository() {
+        System.out.println("call AppConfig.memberRepository");
         return new MemoryMemberRepository();
     }
 
@@ -61,6 +68,7 @@ public class AppConfig {
          * MemberRepository
          * DiscountPolicy
          */
+        System.out.println("call AppConfig.orderService");
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
