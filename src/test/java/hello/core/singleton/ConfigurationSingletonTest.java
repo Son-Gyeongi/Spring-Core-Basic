@@ -50,4 +50,22 @@ public class ConfigurationSingletonTest {
         assertThat(memberService.getMemberRepository()).isSameAs(memberRepository);
         assertThat(orderService.getMemberRepository()).isSameAs(memberRepository);
     }
+
+    // @Configuration 꺼내서 보자
+    @Test
+    void configurationDeep() {
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+        // AppConfig.class 조회,
+        // AnnotationConfigApplicationContext로 AppConifg.class 넘기면
+        // AppConfig.class도 스프링 빈에 등록이 된다.
+        AppConfig bean = ac.getBean(AppConfig.class);
+
+        // getClass()는 bean의 클래스타입이 뭔지 본다.
+        System.out.println("bean = " + bean.getClass());
+        /** 결과
+         * bean = class hello.core.AppConfig$$EnhancerBySpringCGLIB$$7df397d2
+         * AppConfig@CGLIB는 AppConfig를 상속받은 새로운 클래스이다.
+         * 부모타입으로 조회하면 자식타입도 다 끌려나온다.
+         */
+    }
 }

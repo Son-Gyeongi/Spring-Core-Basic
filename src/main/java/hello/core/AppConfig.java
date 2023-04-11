@@ -28,6 +28,12 @@ import org.springframework.context.annotation.Configuration;
  * 이제 스프링을 사용해보자
  * 설정정보에 @Configuration 애노테이션 작성, 그리고 각 메서드에 @Bean을 적어준다.
  * 그러면 각 메서드들이 스프링 컨테이너에 등록이 된다.
+ *
+ * @Configuration을 쓰지 않아도 @Bean만으로 스프링 컨테이너에 스프링빈이 올라간다.
+ * 그런데 싱글톤이 깨진다...
+ * 그리고 AppConfig에서 생짜로 자바 코드 호출하면 memberRepository()를 호출하는 코드가
+ * new MemoryMemberRepository()로 치환된다. 이거는 스프링 컨테이너가 관리하는 스프링 빈이 아니다.
+ * 내가 직접 new 해준거랑 같다. 스프링 컨테이너에서 관리도 안된다.
  */
 @Configuration
 public class AppConfig {
