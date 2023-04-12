@@ -23,15 +23,42 @@ public class OrderServiceImpl implements OrderService {
      *     private DiscountPolicy discountPolicy; // 구체에 의존하지 않고 추상화에 의존 -> 구현체가 없어서 실행 시 NullPointerException이 일어난다.
      */
 
-    private final MemberRepository memberRepository;
-    private final DiscountPolicy discountPolicy;
+    private MemberRepository memberRepository;
+    private DiscountPolicy discountPolicy;
+
+    /**
+     * 수정자 주입(setter주입) - final은 빼야함
+     * private MemberRepository memberRepository;
+     * private DiscountPolicy discountPolicy;
+     *
+     * @Component가 OrderServiceImpl을 스프링 컨테이너에 등록이 된다.
+     * 스프링 컨테이너에는 2가지 라이프 사이클이 있다.
+     * 1. 스프링 빈을 등록
+     * 2. 연관관계 자동으로 주입 (@Autowired가 걸린 애들을 자동으로 주입)
+     * 수정자 주입은 라이프 사이클에서 2번째 단계에서 일어난다.
+     */
+    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
+    public void setMemberRepository(MemberRepository memberRepository) {
+        System.out.println("setter주입 memberRepository = " + memberRepository);
+        this.memberRepository = memberRepository;
+    }
+    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
+    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
+        System.out.println("setter주입 discountPolicy = " + discountPolicy);
+        this.discountPolicy = discountPolicy;
+    }
 
     /**
      * @Component 작성 후 자동 의존 관계 주입
      * ac.getBean(MemberRepository.class) 이런식으로 동작한다고 생각하면 된다.
+     * 생성자 주입은 스프링 라이프 사이클 빈은 등록할 때 같이 자동 의존 관계가 주입이 된다.
+     * 처음 생성할 때 new OrderServiceImpl(memberRepository, discountPolicy)를 호출한다.
+     * 이때 @Autowired 확인하고 memberRepository, discountPolicy를 스프링 빈에서 찾아와서 OrderServiceImpl 생성한다.
      */
+//    @Autowired 생략가능, 스프링 빈에 생성자가 딱 하나 있으면 자동으로 Autowired가 적용이 된다.
     @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
