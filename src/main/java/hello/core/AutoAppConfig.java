@@ -27,6 +27,8 @@ import org.springframework.context.annotation.FilterType;
 public class AutoAppConfig {
 
     /**
+     * 컴포넌트스캔과 충돌 테스트
+     * 스프링빈이 컴포넌트 스캔으로 등록 되어있는데 수동으로 등록하다 보니 충돌이 난다.
      * MemoryMemberRepository랑 이름이 같은 빈 한개 생성
      * 수동 빈 등록이 자동 빈 등록보다 우선권을 가진다.
      * 수동 빈이 자동 빈을 오버라이딩 해버린다.
