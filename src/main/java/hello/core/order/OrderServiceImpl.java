@@ -49,16 +49,18 @@ public class OrderServiceImpl implements OrderService {
      * 2. 연관관계 자동으로 주입 (@Autowired가 걸린 애들을 자동으로 주입)
      * 수정자 주입은 라이프 사이클에서 2번째 단계에서 일어난다.
      */
-//    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
-//    public void setMemberRepository(MemberRepository memberRepository) {
-//        System.out.println("setter주입 memberRepository = " + memberRepository);
-//        this.memberRepository = memberRepository;
-//    }
-//    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
-//    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
-//        System.out.println("setter주입 discountPolicy = " + discountPolicy);
-//        this.discountPolicy = discountPolicy;
-//    }
+    private MemberRepository memberRepository;
+    private DiscountPolicy discountPolicy;
+    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
+    public void setMemberRepository(MemberRepository memberRepository) {
+        System.out.println("setter주입 memberRepository = " + memberRepository);
+        this.memberRepository = memberRepository;
+    }
+    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
+    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
+        System.out.println("setter주입 discountPolicy = " + discountPolicy);
+        this.discountPolicy = discountPolicy;
+    }
 
     /**
      * @Component 작성 후 자동 의존 관계 주입
@@ -73,21 +75,20 @@ public class OrderServiceImpl implements OrderService {
      * 스프링 빈이 아닌 Member같은 클래스에서는 @Autowired코드를 적용해도 아무 기능도 동작하지 않는다.
      */
 //    @Autowired 생략가능, 스프링 빈에 생성자가 딱 하나 있으면 자동으로 Autowired가 적용이 된다.
-    @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
+//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
+//        this.memberRepository = memberRepository;
+//        this.discountPolicy = discountPolicy;
+//    }
 
     // 일반 메서드 - 생성자 주입, 수정자 주입 안에서 다 해결해서 잘 사용하지 않는다.
-    private MemberRepository memberRepository;
-    private DiscountPolicy discountPolicy;
-    @Autowired
-    public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
+//    private MemberRepository memberRepository;
+//    private DiscountPolicy discountPolicy;
+//    @Autowired
+//    public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//        this.memberRepository = memberRepository;
+//        this.discountPolicy = discountPolicy;
+//    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
