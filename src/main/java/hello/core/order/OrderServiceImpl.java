@@ -23,20 +23,20 @@ public class OrderServiceImpl implements OrderService {
      *     private DiscountPolicy discountPolicy; // 구체에 의존하지 않고 추상화에 의존 -> 구현체가 없어서 실행 시 NullPointerException이 일어난다.
      */
 
-//    private MemberRepository memberRepository;
-//    private DiscountPolicy discountPolicy;
+//    private final MemberRepository memberRepository;
+//    private final DiscountPolicy discountPolicy;
 
     // 필드 주입 - 안 쓰는 게 좋다.
-    @Autowired private MemberRepository memberRepository;
-    @Autowired private DiscountPolicy discountPolicy;
-
-    public void setMemberRepository(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
-
-    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
-        this.discountPolicy = discountPolicy;
-    }
+//    @Autowired private MemberRepository memberRepository;
+//    @Autowired private DiscountPolicy discountPolicy;
+//
+//    public void setMemberRepository(MemberRepository memberRepository) {
+//        this.memberRepository = memberRepository;
+//    }
+//
+//    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
+//        this.discountPolicy = discountPolicy;
+//    }
 
     /**
      * 수정자 주입(setter주입) - final은 빼야함
@@ -66,14 +66,28 @@ public class OrderServiceImpl implements OrderService {
      * 생성자 주입은 스프링 라이프 사이클 빈은 등록할 때 같이 자동 의존 관계가 주입이 된다.
      * 처음 생성할 때 new OrderServiceImpl(memberRepository, discountPolicy)를 호출한다.
      * 이때 @Autowired 확인하고 memberRepository, discountPolicy를 스프링 빈에서 찾아와서 OrderServiceImpl 생성한다.
+     *
+     * !! 의존관계 자동 주입은 스프링 컨테이너가 관리하는 스프링 빈이어야 동작한다.
+     * 스프링 빈에서 꺼내서 @Auto 자동으로 wired 연결하기 때문이다. - 내생각..
+     * (OrderServiceImpl가 스프링 빈에 있어서 @Autowired가 동작한다. 일반 자바 객체는 안된다.)
+     * 스프링 빈이 아닌 Member같은 클래스에서는 @Autowired코드를 적용해도 아무 기능도 동작하지 않는다.
      */
 //    @Autowired 생략가능, 스프링 빈에 생성자가 딱 하나 있으면 자동으로 Autowired가 적용이 된다.
-//    @Autowired
-//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-//        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
-//        this.memberRepository = memberRepository;
-//        this.discountPolicy = discountPolicy;
-//    }
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
+
+    // 일반 메서드 - 생성자 주입, 수정자 주입 안에서 다 해결해서 잘 사용하지 않는다.
+    private MemberRepository memberRepository;
+    private DiscountPolicy discountPolicy;
+    @Autowired
+    public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {

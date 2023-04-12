@@ -49,17 +49,17 @@ public class OrderServiceTest {
     // 필드 주입 테스트
     @Test
     void fieldInjectionTest() {
-        OrderServiceImpl orderService = new OrderServiceImpl(); // 객체 생성
-        // memberRepository를 변경할 수 있는 방법이 없다.
-        // 스프링에서 돌리는게 아니라 순수한 자바코드로 돌린다.
+//        OrderServiceImpl orderService = new OrderServiceImpl(); // 객체 생성
+//        // memberRepository를 변경할 수 있는 방법이 없다.
+//        // 스프링에서 돌리는게 아니라 순수한 자바코드로 돌린다.
+////        orderService.createOrder(1L, "memberA", 10000);
+//        // => 결과
+//        // NullPointerException 예외가 뜬다.
+//
+//        // => 해결방법은 OrderServiceImpl에 setter를 만들어준다. new로 생성하는 건 @Autowired가 안된다.
+//        orderService.setMemberRepository(new MemoryMemberRepository());
+//        orderService.setDiscountPolicy(new FixDiscountPolicy());
+//        // => 이 다음에 호출하면 MemoryMemberRepository, FixDiscountPolicy 시용한다.
 //        orderService.createOrder(1L, "memberA", 10000);
-        // => 결과
-        // NullPointerException 예외가 뜬다.
-
-        // => 해결방법은 OrderServiceImpl에 setter를 만들어준다. new로 생성하는 건 @Autowired가 안된다.
-        orderService.setMemberRepository(new MemoryMemberRepository());
-        orderService.setDiscountPolicy(new FixDiscountPolicy());
-        // => 이 다음에 호출하면 MemoryMemberRepository, FixDiscountPolicy 시용한다.
-        orderService.createOrder(1L, "memberA", 10000);
     }
 }
