@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
@@ -95,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
     // @RequiredArgsConstructor가 생성자를 자동으로 작성해준다.
     public OrderServiceImpl(MemberRepository memberRepository,
 //                            @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy,
-                            DiscountPolicy discountPolicy) {
+                            @MainDiscountPolicy DiscountPolicy discountPolicy) {
         System.out.println("1. OrderServiceImpl.OrderServiceImpl");
         this.memberRepository = memberRepository;
         // 빈 조회 시 2개 이상일 때
