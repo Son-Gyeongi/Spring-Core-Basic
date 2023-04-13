@@ -94,7 +94,8 @@ public class OrderServiceImpl implements OrderService {
 //    @Autowired 생략가능, 스프링 빈에 생성자가 딱 하나 있으면 자동으로 Autowired가 적용이 된다.
     // @RequiredArgsConstructor가 생성자를 자동으로 작성해준다.
     public OrderServiceImpl(MemberRepository memberRepository,
-                            @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+//                            @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy,
+                            DiscountPolicy discountPolicy) {
         System.out.println("1. OrderServiceImpl.OrderServiceImpl");
         this.memberRepository = memberRepository;
         // 빈 조회 시 2개 이상일 때
