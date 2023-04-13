@@ -6,6 +6,7 @@ import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component // @ComponentScan 대상이 되면서 스프링 빈으로 등록
@@ -39,8 +40,8 @@ public class OrderServiceImpl implements OrderService {
 
     // 빈 조회 시 2개 이상일 때
     // 필드명에서 @Autowired할 때도 마찬가지이다. 타입 뒤에 필드명을 구체적으로 쓸 클래스르 적어주면 된다.
-    @Autowired
-    private DiscountPolicy rateDiscountPolicy;
+//    @Autowired
+//    private DiscountPolicy rateDiscountPolicy;
 
     // 필드 주입 - 안 쓰는 게 좋다.
 //    @Autowired private MemberRepository memberRepository;
@@ -92,12 +93,14 @@ public class OrderServiceImpl implements OrderService {
      */
 //    @Autowired 생략가능, 스프링 빈에 생성자가 딱 하나 있으면 자동으로 Autowired가 적용이 된다.
     // @RequiredArgsConstructor가 생성자를 자동으로 작성해준다.
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy rateDiscountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository,
+                            @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
         System.out.println("1. OrderServiceImpl.OrderServiceImpl");
         this.memberRepository = memberRepository;
         // 빈 조회 시 2개 이상일 때
         // @Autowired 가진 특별한 기능 타입 뒤에 파라미터명을 내가 쓸 클래스 이름으로 지정해서 작성한다.
-        this.discountPolicy = rateDiscountPolicy;
+//        this.discountPolicy = rateDiscountPolicy;
+        this.discountPolicy = discountPolicy;
     }
 
     // 일반 메서드 - 생성자 주입, 수정자 주입 안에서 다 해결해서 잘 사용하지 않는다.
