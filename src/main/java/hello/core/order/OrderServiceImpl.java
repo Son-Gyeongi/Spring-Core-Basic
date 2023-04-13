@@ -4,10 +4,17 @@ import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component // @ComponentScan 대상이 되면서 스프링 빈으로 등록
+/**
+ * lombok에서 제공하는 어노테이션
+ * 생성자를 자동으로 만들어준다. final이 붙은 필수값을 가지고 생성자를 만든다.
+ * 현재 이 객체에 final이 붙은 게 2개있다. 이 2개를 파라미터로 받는 생성자를 만들어준다.
+ */
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     /**
@@ -79,11 +86,12 @@ public class OrderServiceImpl implements OrderService {
      * 스프링 빈이 아닌 Member같은 클래스에서는 @Autowired코드를 적용해도 아무 기능도 동작하지 않는다.
      */
 //    @Autowired 생략가능, 스프링 빈에 생성자가 딱 하나 있으면 자동으로 Autowired가 적용이 된다.
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
+    // @RequiredArgsConstructor가 생성자를 자동으로 작성해준다.
+//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
+//        this.memberRepository = memberRepository;
+//        this.discountPolicy = discountPolicy;
+//    }
 
     // 일반 메서드 - 생성자 주입, 수정자 주입 안에서 다 해결해서 잘 사용하지 않는다.
 //    private MemberRepository memberRepository;
