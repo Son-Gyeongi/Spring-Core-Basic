@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * 생성자를 자동으로 만들어준다. final이 붙은 필수값을 가지고 생성자를 만든다.
  * 현재 이 객체에 final이 붙은 게 2개있다. 이 2개를 파라미터로 받는 생성자를 만들어준다.
  */
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     /**
@@ -87,11 +87,11 @@ public class OrderServiceImpl implements OrderService {
      */
 //    @Autowired 생략가능, 스프링 빈에 생성자가 딱 하나 있으면 자동으로 Autowired가 적용이 된다.
     // @RequiredArgsConstructor가 생성자를 자동으로 작성해준다.
-//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-//        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
-//        this.memberRepository = memberRepository;
-//        this.discountPolicy = discountPolicy;
-//    }
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     // 일반 메서드 - 생성자 주입, 수정자 주입 안에서 다 해결해서 잘 사용하지 않는다.
 //    private MemberRepository memberRepository;

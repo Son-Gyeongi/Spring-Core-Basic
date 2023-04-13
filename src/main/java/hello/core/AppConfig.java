@@ -75,8 +75,8 @@ public class AppConfig { // 순수한 AppConfig
          * DiscountPolicy
          */
         System.out.println("call AppConfig.orderService");
-//        return new OrderServiceImpl(memberRepository(), discountPolicy());
-        return null; // 기존예제는 살리고 @Autowired 필드 주입 테스트 하기위해서 만들었다.
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
+//        return null; // 기존예제는 살리고 @Autowired 필드 주입 테스트 하기위해서 만들었다.
     }
 
     /**
