@@ -17,14 +17,18 @@ public class OrderServiceImpl implements OrderService {
      * => 객체지향의 5가지 원칙 SOLID 중 OCP, DIP 위반
      * => DIP 위반 : 인터페이스(추상화)와 구현클래스(구체화)를 다 의존한다.
      * => OCP 위반 : 구현클래스를 의존하면서 구현클래스가 바뀌면 OrderServiceImpl클라이언트도 변경해줘야 한다.
-     *     private final MemberRepository memberRepository = new MemoryMemberRepository();
+     * private final MemberRepository memberRepository = new MemoryMemberRepository();
      * //    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
      * //    private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
-     *     private DiscountPolicy discountPolicy; // 구체에 의존하지 않고 추상화에 의존 -> 구현체가 없어서 실행 시 NullPointerException이 일어난다.
+     * private DiscountPolicy discountPolicy; // 구체에 의존하지 않고 추상화에 의존 -> 구현체가 없어서 실행 시 NullPointerException이 일어난다.
      */
 
-//    private final MemberRepository memberRepository;
-//    private final DiscountPolicy discountPolicy;
+    // 생성자를 쓰면 final 키워드를 쓸 수 있다.
+    // final 키워드는 한번 생성할 때 정해지면 안 바뀐다.
+    // 오른쪽에 new로 값을 주거나 생성자로 값을 줄 수 있다.
+    // 생성자 주입이 아니면 final 키워드 불가 set은 객체가 생성된 다음에 호출이 된다.
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
 
     // 필드 주입 - 안 쓰는 게 좋다.
 //    @Autowired private MemberRepository memberRepository;
@@ -49,18 +53,18 @@ public class OrderServiceImpl implements OrderService {
      * 2. 연관관계 자동으로 주입 (@Autowired가 걸린 애들을 자동으로 주입)
      * 수정자 주입은 라이프 사이클에서 2번째 단계에서 일어난다.
      */
-    private MemberRepository memberRepository;
-    private DiscountPolicy discountPolicy;
-    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
-    public void setMemberRepository(MemberRepository memberRepository) {
-        System.out.println("setter주입 memberRepository = " + memberRepository);
-        this.memberRepository = memberRepository;
-    }
-    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
-    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
-        System.out.println("setter주입 discountPolicy = " + discountPolicy);
-        this.discountPolicy = discountPolicy;
-    }
+//    private MemberRepository memberRepository;
+//    private DiscountPolicy discountPolicy;
+//    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
+//    public void setMemberRepository(MemberRepository memberRepository) {
+//        System.out.println("setter주입 memberRepository = " + memberRepository);
+//        this.memberRepository = memberRepository;
+//    }
+//    @Autowired // @Autowired 뺴면 당연히 의존관계 자동 주입 되지 않는다.
+//    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
+//        System.out.println("setter주입 discountPolicy = " + discountPolicy);
+//        this.discountPolicy = discountPolicy;
+//    }
 
     /**
      * @Component 작성 후 자동 의존 관계 주입
@@ -75,11 +79,11 @@ public class OrderServiceImpl implements OrderService {
      * 스프링 빈이 아닌 Member같은 클래스에서는 @Autowired코드를 적용해도 아무 기능도 동작하지 않는다.
      */
 //    @Autowired 생략가능, 스프링 빈에 생성자가 딱 하나 있으면 자동으로 Autowired가 적용이 된다.
-//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-//        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
-//        this.memberRepository = memberRepository;
-//        this.discountPolicy = discountPolicy;
-//    }
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        System.out.println("1. OrderServiceImpl.OrderServiceImpl");
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     // 일반 메서드 - 생성자 주입, 수정자 주입 안에서 다 해결해서 잘 사용하지 않는다.
 //    private MemberRepository memberRepository;
