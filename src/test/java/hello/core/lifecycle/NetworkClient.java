@@ -4,7 +4,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
 // 가짜 네트워크 클라이언트 만들었다.
-public class NetworkClient implements InitializingBean, DisposableBean {
+public class NetworkClient {
 
     // 접속해야 할 서버 url
     private String url;
@@ -45,19 +45,33 @@ public class NetworkClient implements InitializingBean, DisposableBean {
     // Properties 세팅이 끝나면, 즉 의존관계 주입이 끝나면 호출해 주겠다라는 뜻
     // 스프링이 의존관계 주입 다하고 그 때 afterPropertiesSet() 호출
     // 싱글톤 빈으로 스프링 컨테이너 올라올 때 빈이 생성되고 의존관계 주입이 다 끝나고나면 fterPropertiesSet() 호출
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("NetworkClient.afterPropertiesSet");
-        connect();
-        call("초기화 연결 메시지");
-    }
+//    @Override
+//    public void afterPropertiesSet() throws Exception {
+//        System.out.println("NetworkClient.afterPropertiesSet");
+//        connect();
+//        call("초기화 연결 메시지");
+//    }
 
     // implements DisposableBean
     // disConnect(); 호출
     // 빈이 종료될때 destroy()가 호출된다.
-    @Override
-    public void destroy() throws Exception {
-        System.out.println("NetworkClient.destroy");
+//    @Override
+//    public void destroy() throws Exception {
+//        System.out.println("NetworkClient.destroy");
+//        disConnect();
+//    }
+
+    /**
+     * LifeCycleConfig에 빈으로 등록해준다.
+     * @Bean(initMethod = "init", destroyMethod = "close")
+     */
+    public void init() {
+        System.out.println("NetworkClient.init");
+        connect();
+        call("초기화 연결 메시지");
+    }
+    public void close() {
+        System.out.println("NetworkClient.close");
         disConnect();
     }
 }
