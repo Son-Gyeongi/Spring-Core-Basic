@@ -33,6 +33,12 @@ public class SingletonTest {
 
     // 싱글톤 빈이 있는 설정정보를 만들어보자
     @Scope("singleton") // 디폴트라서 안해도 되지만 공부할 겸 적는다.
+    /**
+     * @Component가 없는 이유
+     * AnnotationConfigApplicationContext에 파라미터로 SingletonBean을 지정해주면
+     * 이 클래스가 컴포넌트스캔 대상 처럼 동작하기 때문에 바로 스프링 빈으로 등록한다.
+     * 컴포넌트 스캔처럼 등록됨 그래서 없어도 됨
+     */
     static class SingletonBean {
         @PostConstruct
         public void init() {
