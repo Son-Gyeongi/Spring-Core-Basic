@@ -2,6 +2,7 @@ package hello.core.scope;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
@@ -48,15 +49,20 @@ public class SingletonWithPrototypeTest1 {
     // prototypeBean을 의존관계 주입으로 가져와서 사용
     @Scope("singleton") // 기본값이라서 안해줘도 되지만 테스트를 위해서 적음
     static class ClientBean {
-        private final PrototypeBean prototypeBean; // 생성 시점에 주입
-
-        // 의존관계 주입
-        @Autowired // 생략 가능
-        public ClientBean(PrototypeBean prototypeBean) {
-            this.prototypeBean = prototypeBean;
-        }
+        // 싱글톤빈 안에서 프로토타입을 생성하면 새로운 프로토타입 빈이 생성 안된다.
+//        private final PrototypeBean prototypeBean; // 생성 시점에 주입
+//        // 의존관계 주입
+//        @Autowired // 생략 가능
+//        public ClientBean(PrototypeBean prototypeBean) {
+//            this.prototypeBean = prototypeBean;
+//        }
+        //=> 해결1 ClientBean이 그냥 @Autowired로 ApplicationContext를 받는다.
+        @Autowired
+        private ApplicationContext ac;
 
         public int logic() {
+            // 해결1 logic 호출할 때마다 컨테이너에서 받으면 된다.
+            PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
