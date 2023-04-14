@@ -3,6 +3,9 @@ package hello.core.lifecycle;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 // 가짜 네트워크 클라이언트 만들었다.
 public class NetworkClient {
 
@@ -65,11 +68,25 @@ public class NetworkClient {
      * LifeCycleConfig에 빈으로 등록해준다.
      * @Bean(initMethod = "init", destroyMethod = "close")
      */
+//    public void init() {
+//        System.out.println("NetworkClient.init");
+//        connect();
+//        call("초기화 연결 메시지");
+//    }
+//    public void close() {
+//        System.out.println("NetworkClient.close");
+//        disConnect();
+//    }
+
+    // import javax.annotation.PostConstruct;
+    // javax로 시작하면 자바진영에서 공식적으로 지원하는 거다.
+    @PostConstruct // 생성이된 이후에
     public void init() {
         System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
     }
+    @PreDestroy // 소멸되기 전에
     public void close() {
         System.out.println("NetworkClient.close");
         disConnect();

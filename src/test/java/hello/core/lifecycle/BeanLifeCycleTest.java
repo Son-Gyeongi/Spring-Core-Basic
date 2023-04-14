@@ -27,7 +27,8 @@ public class BeanLifeCycleTest {
     @Configuration
     static class LifeCycleConfig {
         // 빈생성
-        @Bean(initMethod = "init", destroyMethod = "close")
+//        @Bean(initMethod = "init", destroyMethod = "close")
+        @Bean
         public NetworkClient networkClient() {
             NetworkClient networkClient = new NetworkClient(); // 객체 생성
             networkClient.setUrl("http://hello-spring.dev"); // 객체 생성 후 설정이 들어올 수 있다.
