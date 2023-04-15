@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,9 +69,13 @@ public class SingletonWithPrototypeTest1 {
          * 프로토타입 전용으로 사용하는것이 아니라 핵심은 스프링 컨테이너에 조회하는데 내가 직접 찔러서
          * 조회하기보다는 ObjectProvider를 통해서 대신 조회하는 대리자라고 생각하자.
          */
-        @Autowired
-        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
+//        @Autowired
+//        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
 //        private ObjectFactory<PrototypeBean> prototypeBeanProvider; // ObjectProvider의 부모 인터페이스를 써도 된다.
+
+        // 해결3 javax.inject.Provider 사용 - 스프링에 의존적이지 않다.
+        @Autowired
+        private Provider<PrototypeBean> prototypeBeanProvider;
 
         public int logic() {
             // 해결1 logic 호출할 때마다 컨테이너에서 받으면 된다.
@@ -80,7 +85,9 @@ public class SingletonWithPrototypeTest1 {
             // Application한테 직접 찾는게 아니라 getObject가 찾아주는 기능만 제공
             // 그러면 우리는 스프링의 기능을 다 쓰는게 아니라 줄여서 사용가능하다.
             // 그리고 우리가 원했던 필요할 때마다 스프링 컨테이너에게 요청했던 그 기능을 사용할 수 있다.
-            PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
+//            PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
+            // 해결3
+            PrototypeBean prototypeBean = prototypeBeanProvider.get();
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;

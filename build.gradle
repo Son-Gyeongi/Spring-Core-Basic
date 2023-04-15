@@ -32,6 +32,10 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	// lombok 라이브러리 추가 끝
+
+	// JSR-330 Provider, javax.infect.Provider라는 JSR-330 자바 표준 사용
+	// ObjectProvider는 스프링에 의존적인데 javax.infect.Provider는 스프링에 의존적이지 않다.
+	implementation 'javax.inject:javax.inject:1'
 }
 
 tasks.named('test') {
