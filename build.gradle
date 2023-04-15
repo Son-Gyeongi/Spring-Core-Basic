@@ -36,6 +36,15 @@ dependencies {
 	// JSR-330 Provider, javax.infect.Provider라는 JSR-330 자바 표준 사용
 	// ObjectProvider는 스프링에 의존적인데 javax.infect.Provider는 스프링에 의존적이지 않다.
 	implementation 'javax.inject:javax.inject:1'
+
+	// 웹 스코프는 웹 환경에서만 동작하므로 web 환경이 동작하도록 라이브러리 추가하자
+	// web 라이브러리 추가
+	/**
+	 * 스프링 실행시 웹 기술이 들어가면서 서버가 띄워진다.
+	 * Tomcat started on port(s): 8080 (http) with context path ''
+	 * 스프링 부트는 내장 톰캣 서버를 활용해서 웹 서버와 스프링을 함께 실행시킨다.
+	 */
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
 tasks.named('test') {
