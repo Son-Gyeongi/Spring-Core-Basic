@@ -10,7 +10,7 @@ import java.util.UUID;
 @Component
 @Scope(value = "request") // request스코프 이 빈은 HTTP요청 당 하나씩 생성되고, HTTP요청이 끝나는 시점에 소멸
 // 로그를 출력하기 위한 클래스
-public class Mylogger {
+public class MyLogger {
 
     private String uuid;
     private String requestURL;
