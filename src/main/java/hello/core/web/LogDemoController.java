@@ -22,7 +22,10 @@ public class LogDemoController {
      * controller에 고객 요청이 와서 (controller에 고객 요청이 왔다는 건 Http가 살아있는 상태이다.)
      * 스코프를 쓸 수 있는 상황이다.(Http request가 들어왔으니깐)
      */
-    private final ObjectProvider<MyLogger> myLoggerProvider;
+//    private final ObjectProvider<MyLogger> myLoggerProvider;
+
+    // 해결2 프록시 - Provider 쓰는 거랑 똑같이 동작한다.
+    private final MyLogger myLogger;
 
     @RequestMapping("log-demo")
     @ResponseBody // view 화면이 없이 바로 문자로 반환하고 싶을 때, 문자 그대로 응답
@@ -31,7 +34,10 @@ public class LogDemoController {
         // 그게 HttpRequest 정보를 받을 수 있다. 고객 요청정보를 받을 수 있다.
 
         String requestUrl = request.getRequestURL().toString(); // 고객이 어떤 url로 요청했는지 알 수 있다.
-        MyLogger myLogger = myLoggerProvider.getObject();
+//        MyLogger myLogger = myLoggerProvider.getObject();
+        // 스프링에서 조작한 애가 스프링 빈에 등록이 되어있다.
+        // myLogger = class hello.core.common.MyLogger$$EnhancerBySpringCGLIB$$456fa337
+        System.out.println("myLogger = " + myLogger.getClass());
         myLogger.setRequestURL(requestUrl);
 
         myLogger.log("controller test");
