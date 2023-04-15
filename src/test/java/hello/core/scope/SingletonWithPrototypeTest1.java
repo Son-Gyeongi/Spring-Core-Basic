@@ -1,6 +1,8 @@
 package hello.core.scope;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -42,7 +44,7 @@ public class SingletonWithPrototypeTest1 {
 
         ClientBean clientBean2 = ac.getBean(ClientBean.class);
         int count2 = clientBean2.logic();
-        assertThat(count2).isEqualTo(2);
+        assertThat(count2).isEqualTo(1);
     }
 
     // 싱글톤빈 만들자
@@ -57,12 +59,28 @@ public class SingletonWithPrototypeTest1 {
 //            this.prototypeBean = prototypeBean;
 //        }
         //=> 해결1 ClientBean이 그냥 @Autowired로 ApplicationContext를 받는다.
+//        @Autowired
+//        private ApplicationContext ac;
+
+        // 해결2 ClientBean에 주입을 받는다.
+        /**
+         * ObjectProvider는 스프링 컨테이너를 통해서 Dependency Lookup(찾아주는 과정)을 간단하게 도와준다.
+         * 프로토타입 전용으로 사용하는것이 아니라 핵심은 스프링 컨테이너에 조회하는데 내가 직접 찔러서
+         * 조회하기보다는 ObjectProvider를 통해서 대신 조회하는 대리자라고 생각하자.
+         */
         @Autowired
-        private ApplicationContext ac;
+        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
+//        private ObjectFactory<PrototypeBean> prototypeBeanProvider; // ObjectProvider의 부모 인터페이스를 써도 된다.
 
         public int logic() {
             // 해결1 logic 호출할 때마다 컨테이너에서 받으면 된다.
-            PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
+//            PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
+            // 해결2 prototypeBeanProvider는 대신 스프링빈을 찾아주는거다
+            // getObject() 호출하면 애가 그 때서야 스프링 컨테이너에서 프로토타입빈을 찾아서 준다.
+            // Application한테 직접 찾는게 아니라 getObject가 찾아주는 기능만 제공
+            // 그러면 우리는 스프링의 기능을 다 쓰는게 아니라 줄여서 사용가능하다.
+            // 그리고 우리가 원했던 필요할 때마다 스프링 컨테이너에게 요청했던 그 기능을 사용할 수 있다.
+            PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
